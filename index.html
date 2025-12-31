@@ -8,104 +8,81 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <script defer src="src/script.js"></script>
 </head>
-<body class="bg-neutral-9 text-neutral-0 p-3 font-dm-sans grid gap-4 grid-cols-1 md:grid-cols-3 max-w-4xl m-auto">
+<body class="bg-neutral-9 text-neutral-0 p-3 font-dm-sans grid gap-4 md:gap-5 grid-cols-1 md:grid-cols-3 max-w-5xl m-auto">
   <nav class="flex justify-between items-center md:col-span-3">
     <img src="assets/images/logo.svg" alt="" class="w-25">
-    <div class="flex bg-neutral-7 py-1 px-2 text-xs rounded-sm gap-1 cursor-pointer">
-      <img src="assets/images/icon-units.svg" alt="" class="w-3">
-      Units
-      <img src="assets/images/icon-dropdown.svg" alt="" class="w-2">
+    <div class="dropdown relative">
+      <button class="dropdown-button focus:outline-2 focus:outline-offset-2 focus:outline-neutral-0 flex bg-neutral-7 py-1 px-2 text-xs rounded-sm gap-1 cursor-pointer">
+        <img src="assets/images/icon-units.svg" alt="" class="w-3">
+        Units
+        <img src="assets/images/icon-dropdown.svg" alt="" class="w-2">
+      </button>
+      <ul class="dropdown-menu w-40 hidden *:text-nowrap right-0 absolute mt-2 bg-neutral-8 rounded-xl border border-neutral-6 p-3 text-sm flex flex-col gap-2 z-10">
+        <li class="text-xs text-neutral-3">Temperature</li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="true" data-name="temperature" data-value="celsius">Celsius (°C) <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="false" data-name="temperature" data-value="fahrenheit">Fahrenheit (°F) <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+        <hr class="border-neutral-6">
+        <li class="text-xs text-neutral-3">Wind Speed</li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="true" data-name="windspeed" data-value="kmh">km/h <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="false" data-name="windspeed" data-value="mph">mph <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+        <hr class="border-neutral-6">
+        <li class="text-xs text-neutral-3">Precipitation</li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="true" data-name="precipitation" data-value="mm">Milimeters(mm) <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+        <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="false" data-name="precipitation" data-value="inch">Inches(in) <img src="assets/images/icon-checkmark.svg" class="w-3 group-data-[active=true]:block hidden" alt=""></li>
+      </ul>
     </div>
   </nav>
+  <div class="hidden flex-col gap-4 text-center justify-center md:col-span-3 pt-10" id="errorAPI">
+    <img src="assets/images/icon-error.svg" class="w-6 m-auto" alt="">
+    <h1 class="text-4xl font-bold">Something went wrong</h1>
+    <p class="max-w-sm m-auto text-sm text-neutral-2">We couldn't connect to the server (API error). Please try again in a few moments.</p>
+    <button type="button" class="flex bg-neutral-8 py-2 px-3 text-xs rounded-sm gap-1 w-fit m-auto"><img src="assets/images/icon-retry.svg" alt="" onclick="window.location.reload()">Retry</button>
+  </div>
   <header class="md:col-span-3 max-w-xl m-auto">
     <h1 class="text-4xl font-bold text-center my-10 font-bricolage">How's the sky looking today?</h1>
-    <div class="sm:flex sm:items-center sm:gap-2">
+    <div class="relative sm:flex sm:items-center sm:gap-2 md:px-5">
       <div class="relative w-full">
-        <input type="text" class="bg-neutral-7 rounded-lg p-2 ps-10 w-full text-sm" placeholder="Search for a place...">
+        <input type="text" id="search-input" autocomplete="off" class="focus:outline-2 focus:outline-offset-2 focus:outline-neutral-0 bg-neutral-7 hover:bg-neutral-6 rounded-lg p-2 ps-10 w-full text-sm" placeholder="Search for a place...">
         <img src="assets/images/icon-search.svg" class="absolute top-1/2 left-4 -translate-y-1/2 w-3" alt="">
       </div>
-      <button class="w-full sm:w-28 bg-blue-5 p-2 rounded-lg mt-2 sm:m-0">Search</button>
+      <!-- <button class="w-full sm:w-28 bg-blue-5 p-2 rounded-lg mt-2 sm:m-0">Search</button> -->
+      <ul id="search-suggestion" class="hidden md:w-[calc(100%-2.5rem)] left-1/2 -translate-x-1/2 top-[calc(100%+0.1rem)] w-full *:text-nowrap absolute mt-2 bg-neutral-8 rounded-xl border border-neutral-6 p-3 text-sm flex flex-col gap-2 z-10">
+        <!-- <li class="hover:bg-neutral-6 hover:outline-4 hover:rounded-xs hover:outline-neutral-6"></li> -->
+      </ul>
     </div>
   </header>
-  <section class="md:col-span-2">
+  <section class="dashboard-content md:col-span-2">
     <div class='mb-3 w-full overflow-hidden rounded-xl relative flex flex-col text-center sm:text-start px-5 pt-6 pb-30 sm:py-18'>
       <div class='bg-[url("/assets/images/bg-today-small.svg")] sm:bg-[url("/assets/images/bg-today-large.svg")] bg-cover absolute -inset-3 -z-10 blur-[3px]'></div>
-      <h2 class="text-lg font-bold">Berlin, Germany</h2>
-      <p class="text-xs">Tuesday, Aug 5, 2025</p>
-      <img src="assets/images/icon-sunny.webp" class="absolute z-1 w-20 sm:bottom-1/2 sm:translate-y-1/2 sm:right-32" alt="">
-      <h1 class="absolute text-6xl italic font-bold bottom-10 right-5 sm:bottom-1/2 sm:translate-y-1/2">20°</h1>
+      <h2 class="text-lg font-bold" id="location">Berlin, Germany</h2>
+      <p class="text-xs" id="date-now">Tuesday, Aug 5, 2025</p>
+      <img src="assets/images/icon-sunny.webp" class="absolute z-1 w-20 sm:bottom-1/2 sm:translate-y-1/2 sm:right-40" alt="">
+      <h1 class="absolute text-6xl italic font-bold bottom-10 right-5 sm:bottom-1/2 sm:translate-y-1/2" id="temperature">20°</h1>
     </div>
     <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
       <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
         <p class="text-sm pb-3">Feels Like</p>
-        <h3 class="text-xl">18</h3>
+        <h3 class="text-xl" id="feels">18</h3>
       </div>
       <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
         <p class="text-sm pb-3">Humadity</p>
-        <h3 class="text-xl">46%</h3>
+        <h3 class="text-xl" id="humadity">46%</h3>
       </div>
       <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
         <p class="text-sm pb-3">Wind</p>
-        <h3 class="text-xl">14 km/h</h3>
+        <h3 class="text-xl" id="wind">14 km/h</h3>
       </div>
       <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
         <p class="text-sm pb-3">Precipitation</p>
-        <h3 class="text-xl">0 mm</h3>
+        <h3 class="text-xl" id="precipitation">0 mm</h3>
       </div>
     </div>
   </section>
-  <section class="md:col-start-1 md:col-span-2">
+  <section class="dashboard-content md:col-start-1 md:col-span-2">
     <h3 class="text-sm mb-2 font-medium">Daily forecast</h3>
-    <div class="grid grid-cols-3 gap-3 sm:grid-cols-7">
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
-      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
-        <p class="text-sm">Tue</p>
-        <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
-        <div class="flex text-xs justify-between">
-          <p>20°</p>
-          <p>14°</p>
-        </div>
-      </div>
+    <div class="grid grid-cols-3 gap-3 md:grid-cols-4 lg:grid-cols-7" id="daily">
       <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
         <p class="text-sm">Tue</p>
         <img src="assets/images/icon-rain.webp" class="w-11 m-auto" alt="">
@@ -116,44 +93,99 @@
       </div>
     </div>
   </section>
-  <section class="bg-neutral-8 rounded-xl px-3 py-4 md:col-start-3 md:row-start-3 md:row-end-5">
+  <section class="dashboard-content bg-neutral-8 rounded-xl px-3 py-4 md:col-start-3 md:row-start-3 md:row-end-5">
     <div class="flex justify-between items-center mb-2.5">
       <h3 class="text-sm font-medium">Hourly forecast</h3>
-      <div class="flex bg-neutral-6 py-1 px-2 text-xs rounded-sm gap-1 cursor-pointer">
-        Tuesday
-        <img src="assets/images/icon-dropdown.svg" alt="" class="w-2">
+      <div class="dropdown relative">
+      <button id="dayButton" class="dropdown-button focus:outline-2 focus:outline-offset-2 focus:outline-neutral-0 flex bg-neutral-7 py-1 px-2 text-xs rounded-sm gap-1 cursor-pointer">
+      </button>
+      <ul id="hourly-set-day" class="dropdown-menu hidden w-35 *:text-nowrap right-0 absolute mt-2 bg-neutral-8 rounded-xl border border-neutral-6 p-3 text-sm flex flex-col gap-2 z-10">
+        <!-- <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="false" data-name="day">Tuesday</li> -->
+      </ul>
+    </div>
+    </div>
+    <div id="hourly" class="flex flex-col gap-3 md:max-lg:h-140 h-100 overflow-auto scrollbar-hide">
+      <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
+        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
+        <h4 class="text-sm flex-auto">3 PM</h4>
+        <p class="text-xs">20°</p>
       </div>
     </div>
-    <div class="flex flex-col gap-3">
+  </section>
+  <section class="loading-content md:col-span-2">
+    <div class='bg-neutral-8 border-neutral-6 items-center mb-3 w-full overflow-hidden rounded-xl relative flex flex-col text-center sm:text-start px-5 pt-6 pb-30 sm:py-18'>
+      <div class="flex gap-2 mb-3">
+        <div class="animate-bounce rounded-full w-2 bg-neutral-0 aspect-square"></div>
+        <div class="animate-bounce rounded-full w-2 bg-neutral-0 aspect-square [animation-delay:300ms]"></div>
+        <div class="animate-bounce rounded-full w-2 bg-neutral-0 aspect-square [animation-delay:300ms]"></div>
+      </div>
+      Loading...
+    </div>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
+        <p class="text-sm pb-3">Feels Like</p>
+        <p>-</p>
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
+        <p class="text-sm pb-3">Humadity</p>
+        <p>-</p>
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
+        <p class="text-sm pb-3">Wind</p>
+        <p>-</p>
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border p-3 rounded-lg">
+        <p class="text-sm pb-3">Precipitation</p>
+        <p>-</p>
+      </div>
+    </div>
+  </section>
+  <section class="loading-content md:col-start-1 md:col-span-2">
+    <h3 class="text-sm mb-2 font-medium">Daily forecast</h3>
+    <div class="grid grid-cols-3 gap-3 md:grid-cols-4 lg:grid-cols-7 *:h-30" id="daily">
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+      <div class="bg-neutral-8 border-neutral-6 border py-3 px-2 rounded-lg flex flex-col text-center gap-2">
+      </div>
+    </div>
+  </section>
+  <section class="loading-content bg-neutral-8 rounded-xl px-3 py-4 md:col-start-3 md:row-start-3 md:row-end-5">
+    <div class="flex justify-between items-center mb-2.5">
+      <h3 class="text-sm font-medium">Hourly forecast</h3>
+      <div class="dropdown relative">
+      <button id="dayButton" class="dropdown-button focus:outline-2 focus:outline-offset-2 focus:outline-neutral-0 flex bg-neutral-7 py-1 px-2 text-xs rounded-sm gap-1 cursor-pointer">
+        -
+      <img src="assets/images/icon-dropdown.svg" class="w-3" alt="">
+      </button>
+      <ul id="hourly-set-day" class="dropdown-menu hidden w-35 *:text-nowrap right-0 absolute mt-2 bg-neutral-8 rounded-xl border border-neutral-6 p-3 text-sm flex flex-col gap-2 z-10">
+        <!-- <li class="item-dropdown focus:outline focus:outline-offset-1 focus:outline-neutral-0 group" data-active="false" data-name="day"></li> -->
+      </ul>
+    </div>
+    </div>
+    <div id="hourly" class="flex flex-col gap-3 md:max-lg:h-140 h-100 *:h-10 overflow-auto scrollbar-hide">
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
       </div>
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
       </div>
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
       </div>
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
       </div>
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
       </div>
       <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
-        <img src="assets/images/icon-rain.webp" class="w-7" alt="">
-        <h4 class="text-sm flex-auto">3 PM</h4>
-        <p class="text-xs">20°</p>
+      </div>
+      <div class="p-2 bg-neutral-7 border border-neutral-6 rounded-md flex items-center gap-2">
       </div>
     </div>
   </section>

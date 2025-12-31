@@ -19,3 +19,21 @@
     --font-dm-sans: "DM Sans", sans-serif;
     --font-bricolage: "Bricolage Grotesque", sans-serif;
 }
+
+@layer components {
+    .item-dropdown {
+        @apply cursor-pointer;
+        @apply hover:bg-neutral-6 hover:outline-4 hover:rounded-xs hover:outline-neutral-6;
+        @apply data-[active=true]:bg-neutral-6 data-[active=true]:outline-4 data-[active=true]:rounded-xs data-[active=true]:outline-neutral-6 data-[active=true]:flex data-[active=true]:justify-between;
+    }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
