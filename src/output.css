@@ -458,6 +458,9 @@
   .bg-\[url\(\"\/assets\/images\/bg-today-small\.svg\"\)\] {
     background-image: url("/assets/images/bg-today-small.svg");
   }
+  .bg-\[url\(\"assets\/images\/bg-today-small\.svg\"\)\] {
+    background-image: url("assets/images/bg-today-small.svg");
+  }
   .bg-cover {
     background-size: cover;
   }
@@ -762,6 +765,11 @@
   .sm\:bg-\[url\(\"\/assets\/images\/bg-today-large\.svg\"\)\] {
     @media (width >= 40rem) {
       background-image: url("/assets/images/bg-today-large.svg");
+    }
+  }
+  .sm\:bg-\[url\(\"assets\/images\/bg-today-large\.svg\"\)\] {
+    @media (width >= 40rem) {
+      background-image: url("assets/images/bg-today-large.svg");
     }
   }
   .sm\:py-18 {
