@@ -48,12 +48,12 @@ Users should be able to:
 ### Built with
 
 - Semantic HTML5 markup
-- Tailwind CSS
-- Vanila Javascript
+- Tailwind CSS (Utility-first framework)
+- Vanilla JavaScript (ES6+)
 
 ### What I learned
 
-I learn how to fetch API via link from open-meteo.com and adjust link with the data that user want to. This is enough challanging because there are a fiture search suggestion that show realtimely all location. I finish this challange with Debounce method, that fetch API if user in half second don't type with setTimeout() and clearTimeout(), so don't waste limit API.
+I mastered the process of fetching and parsing asynchronous data from external APIs. The most challenging part was the real-time search suggestion feature. I successfully managed this by utilizing `setTimeout()` and `clearTimeout()` to implement Debouncing, ensuring the application remains within API usage limits.
 
 ```js
 searchInput.addEventListener('input', (e) => {
@@ -78,7 +78,7 @@ searchInput.addEventListener('input', (e) => {
 <!-- Indonesia:
 Saya belajar mengambil API melalui link open-meteo.com dan mengubah linknya sesuai data yang diinginkan user. Ini cukup menantang karena terdapat fitur search suggestion yang menampilkan semua lokasi secara realtime. Saya menyelesaikannya dengan teknik Debounce, yaitu mengambil API jika user selama setengah detik tidak mengetik menggunakan setTimeout() dan clearTimeout(), sehingga tidak menghamburkan batas pengambilan API. -->
 
-This is first time I use Tailwind CSS. I learn the fundamental like make @theme and @compenent. I also use dataset for name, value, and state of dropdown item. So, I make a dropdown that can be used again.
+Additionally, this was my first experience with Tailwind CSS. I learned how to configure `@theme` and `@components` for reusability. I also leveraged HTML Data Attributes (`dataset`) to manage the state and values of dropdown components, making them modular and reusable.
 
 <!-- Indonesia:
 Ini juga adalah pertama kalinya saya menggunakan Tailwind CSS. Saya mempelajari dasar-dasarnya seperti pembuatan @theme dan @compenent. Saya juga menggunakan dataset untuk nama, nilai, dan status item dropdown, misalnya secara berurutan temperature, celcius, dan aktif, sehingga menciptakan dropdown yang bisa digunakan kembali. -->
@@ -89,16 +89,15 @@ Ini juga adalah pertama kalinya saya menggunakan Tailwind CSS. Saya mempelajari 
 
 <!-- Selanjutnya saya akan mempelajari Aria untuk Aksesibilitas dan React. Sejujurnya, Aksesibilitas adalah salah satu unsur yang sulit untuk diterapkan karena saya tidak melihatnya langsung.
 Situs ini bisa ditingkatkan lebih lanjut dengan mengecek secara otomatis lokasi pengguna.  -->
-Next, I will learn ARIA for accessibilty and React. Actually, Accessibility is one of thing that hard to implement because I don't see directly.
-This site can be developed further by checking automatically user location
+My next goal is to deepen my understanding of ARIA (Accessible Rich Internet Applications) and transition the project to React. I’ve realized that accessibility is a crucial yet challenging aspect of web development. Furthermore, I plan to implement the Geolocation API to automatically detect and display weather data based on the user's current coordinates.
 
 ### Useful resources
 
-- [Open Meteo](https://open-meteo.com) - This give me full documentation and help me know weather-icon code to be converted to img.
+- [Open Meteo](https://open-meteo.com) - Excellent documentation for weather data and WMO code mapping.
 <!-- Ini memberikan dokumentasi lengkap dan membantuku mengetahui arti kode weather-icon untuk diubah ke img. -->
-- [Tailwindcss](https://tailwindcss.com/) - This help me understand fundamental Tailwind like how Tailwind work and how to start.
+- [Tailwindcss](https://tailwindcss.com/) - Fundamental for understanding the utility-first workflow.
 <!-- Ini membantuku memahami dasar-dasar Tailwind dan memulainya. -->
-- [Gemini](https://gemini.google.com/) - This help me understand new concept and repair many bug.
+- [Gemini](https://gemini.google.com/) - Invaluable for debugging and understanding complex architectural concepts.
 <!-- Ini membantuku memahami konsep baru dan memperbaiki bug. -->
 
 ## Author
