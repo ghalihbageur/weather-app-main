@@ -63,7 +63,6 @@ searchInput.addEventListener('input', (e) => {
             try {
                 const respond = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${event.value}&count=10&language=en&format=json`);
                 suggestion = await respond.json();
-                console.log(suggestion);
                 displaySuggestion();
             } catch(error) {
                 errorHandle(error);
